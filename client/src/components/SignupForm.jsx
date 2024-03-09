@@ -1,8 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { 
+  useState, 
+  useEffect } from 'react';
+import { 
+  Form, 
+  Button, 
+  Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
-import { ADD_USER } from '../graphql/mutations'; // Adjust the path as needed
+import { ADD_USER } from '../graphql/mutations';
 
 const SignupForm = () => {
   // set initial form state
@@ -11,7 +16,6 @@ const SignupForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-  // Get the addUser mutation function from Apollo Client
   const [addUser, { error }] = useMutation(ADD_USER);
 useEffect(() => {
  error ? setShowAlert(true) : setShowAlert(false) 
@@ -25,7 +29,7 @@ useEffect(() => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // Check if form has everything (as per react-bootstrap docs).
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -37,8 +41,6 @@ useEffect(() => {
         variables: { username: userFormData.username, email: userFormData.email, password: userFormData.password },
       });
 
-     
-      // console.log(user);
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);

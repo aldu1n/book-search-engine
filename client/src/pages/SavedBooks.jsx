@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Container,
   Card,
@@ -39,12 +38,11 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-// Check for errors
+
 if (error) {
   return <h2>Error: {error.message}</h2>;
 }
 
-// Check if userData and userData.me are defined before accessing userData.me.savedBooks
 const savedBooks = userData?.me?.savedBooks || [];
 
 return (

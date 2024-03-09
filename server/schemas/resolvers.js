@@ -17,6 +17,7 @@ const resolvers = {
     },
   },
   Mutation: {
+    // Login mutation. Uses tokens.
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 

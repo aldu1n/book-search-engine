@@ -1,8 +1,11 @@
-// see SignupForm.js for comments
+// See SignupForm.js for comments.
 import { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { 
+  Form, 
+  Button, 
+  Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../graphql/mutations'; // Adjust the import path as necessary
+import { LOGIN_USER } from '../graphql/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
@@ -10,7 +13,7 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  const [loginUser, { error }] = useMutation(LOGIN_USER); // Use the LOGIN_USER mutation
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -20,7 +23,7 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // Check if form has everything (as per react-bootstrap docs).
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();

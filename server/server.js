@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
 
+// Apollo imports.
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const { authMiddleware } = require('./utils/auth');
 
-
+// GraphQL imports.
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
@@ -19,7 +20,7 @@ const server = new ApolloServer({
 
 const app = express();
 
-
+// Creates new Apollo Server connection.
 const startApolloServer = async () => {
   await server.start();
   
@@ -30,6 +31,7 @@ const startApolloServer = async () => {
     context: authMiddleware
   }));
 
+  // If we're in production, serve client/build as static assets.
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
