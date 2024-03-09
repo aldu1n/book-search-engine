@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Container,
   Card,
@@ -7,16 +8,13 @@ import {
 } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
-import { 
-  useQuery, 
-  useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../graphql/queries';
 import { REMOVE_BOOK } from '../graphql/mutations';
 
 const SavedBooks = () => {
   const { loading, error, data: userData } = useQuery(GET_ME);
   const [removeBook] = useMutation(REMOVE_BOOK);
-
 
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -30,22 +28,23 @@ const SavedBooks = () => {
         variables: { bookId },
         context: { headers: { authorization: `Bearer ${token}` } },
       });
-  
+
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
 
+
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-
+// Check for errors
 if (error) {
   return <h2>Error: {error.message}</h2>;
 }
 
-
+// Check if userData and userData.me are defined before accessing userData.me.savedBooks
 const savedBooks = userData?.me?.savedBooks || [];
 
 return (

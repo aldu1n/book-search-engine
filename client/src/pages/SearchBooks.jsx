@@ -12,8 +12,7 @@ import Auth from '../utils/auth';
 import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { useMutation } from '@apollo/client';
-import { SAVE_BOOK } from '../graphql/mutations0';
-
+import { SAVE_BOOK } from '../graphql/mutations'; 
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -67,25 +66,24 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    console.log(bookToSave);
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+  
     if (!token) {
       return false;
     }
-
+  
     try {
-      const { response } = await saveBookMutation({
-        variables: { input: bookToSave }
+      // Use the `saveBook` mutation function with the necessary variables
+      const { data } = await saveBookMutation({
+      
+        variables: { input: {...bookToSave} },
+        // context: { headers: { authorization: `Bearer ${token}` } },
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
+  console.log(data);
       // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, response.bookToSave.bookId]);
+      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
     }
