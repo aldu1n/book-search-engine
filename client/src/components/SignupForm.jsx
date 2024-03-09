@@ -1,14 +1,8 @@
-import { 
-  useState,
-  useEffect } from 'react';
-import { 
-  Form,
-  Button, 
-  Alert } from 'react-bootstrap';
-
+import { useState, useEffect } from 'react';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
-import { ADD_USER } from '../graphql/mutations';
+import { ADD_USER } from '../graphql/mutations'; // Adjust the path as needed
 
 const SignupForm = () => {
   // set initial form state
@@ -17,10 +11,11 @@ const SignupForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+  // Get the addUser mutation function from Apollo Client
   const [addUser, { error }] = useMutation(ADD_USER);
-  useEffect(() => {
-    error ? setShowAlert(true) : setShowAlert(false)
-  }, [error])
+useEffect(() => {
+ error ? setShowAlert(true) : setShowAlert(false) 
+}, [error])
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -39,9 +34,11 @@ const SignupForm = () => {
 
     try {
       const { data } = await addUser({
-        variables: { username: userFormData.username, email: userFormData.email, password: userFormData.password},
+        variables: { username: userFormData.username, email: userFormData.email, password: userFormData.password },
       });
 
+     
+      // console.log(user);
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);

@@ -1,38 +1,36 @@
 const jwt = require('jsonwebtoken');
 const { GraphQLError } = require('graphql');
-// Set token secret and expiration date.
+// set token secret and expiration date
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
 module.exports = {
-  // Function for our authenticated routes.
-  AuthenticationError: new GraphQLError('Could not authenticate user.', {
+  // function for our authenticated routes
+  AuthenticationError: new GraphQLError('could not authenticate', {
     extensions: {
       code: 'UNAUTHENTICATED',
     },
   }),
-  authMiddleware: function ({ req }) {
-    // Allows token to be sent via  req.query or headers.
+  authMiddleware: function ({req}) {
+    // Check if the request is a GraphQL request
     let token = req.body.token || req.query.token || req.headers.authorization;
-
-    // We split the token string into an array and return actual token.
     if (req.headers.authorization) {
+
       token = token.split(' ').pop().trim();
-    }
+    } 
 
-    if (!token) {
-      return req;
-    }
-
-    // Verify token and get user data out of it.
-    try {
-      const { data } = jwt.verify(token, secret, { maxAge: expiration });
-      req.user = data;
-    } catch {
-      console.log('Invalid token');
-    }
-    //Send to next endpoint.
-    return req;
+      if (!token) {
+        return req
+      }
+  
+      try {
+        const { data } = jwt.verify(token, secret, { maxAge: expiration });
+        req.user = data;
+      } catch {
+        console.log('Invalid token');        
+      }
+    
+  return req 
   },
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
